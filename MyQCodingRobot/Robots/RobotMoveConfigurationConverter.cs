@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace MyQCodingRobot.Robots
 {
@@ -28,6 +23,11 @@ namespace MyQCodingRobot.Robots
             }
 
             throw new Exception();
+        }
+
+        public IList<RobotMoveConfiguration> GetByCode(IEnumerable<string> codes)
+        {
+            return codes.Select(c => GetByCode(c)).ToList();
         }
     }
 }

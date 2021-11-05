@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MyQCodingRobot.Robots;
 
 namespace MyQCodingRobot.Worlds
 {
@@ -15,7 +11,7 @@ namespace MyQCodingRobot.Worlds
             Cells = cells;
         }
 
-        private Cell GetCell((int X, int Y) position)
+        private Cell GetCell(Position position)
         {
             if (position.X < 0 || position.X > Cells[0].Length)
             {
@@ -29,19 +25,28 @@ namespace MyQCodingRobot.Worlds
             return Cells[position.Y][position.X];
         }
 
-        public bool CanMove((int X, int Y) position)
+        public bool CanMove(Position position)
         {
             return GetCell(position).Configuration.CanBeOccupied;
         }
 
-        public void Clean((int X, int Y) position)
+        public void Clean(Position position)
         {
             GetCell(position).Clean();
         }
 
         public override string ToString()
         {
-            return String.Join("\n", Cells.Select(cr => String.Join(",", cr.Select(c => c.ToString()))));
+            return String.Join("\n", Cells.Select(cr => String.Join(", ", cr.Select(c => c.ToString()))));
+        }
+
+        public string ToString(Robot robot)
+        {
+            return String.Join("\n", Cells.Select(cr => String.Join(", ", cr.Select(c =>
+            {
+                string? r = robot.Position == c.Coordinates ? robot.ToShort() : " ";
+                return c.ToString() + r;
+            }))));
         }
     }
 }

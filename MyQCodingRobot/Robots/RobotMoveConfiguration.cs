@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using MyQCodingRobot.Worlds;
 
 namespace MyQCodingRobot.Robots
@@ -23,6 +19,11 @@ namespace MyQCodingRobot.Robots
             Code = code;
             Cost = cost;
             Function = function;
+        }
+
+        public override string ToString()
+        {
+            return $"{Code}";
         }
 
         public static readonly RobotMoveConfiguration TurnLeft = new(RobotMove.TurnLeft, "TL", 1, (r, w) => r.TurnLeft());

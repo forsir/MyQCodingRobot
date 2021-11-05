@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MyQCodingRobot.Worlds
 {
     public class Cell
@@ -11,7 +6,7 @@ namespace MyQCodingRobot.Worlds
         public static Cell EmptyCell => new Cell(-1, -1, CellConfiguration.Wall);
 
 
-        public (int X, int Y) Coordinates { get; private set; }
+        public Position Coordinates { get; private set; }
 
         public CellConfiguration Configuration { get; private set; }
 
@@ -19,7 +14,7 @@ namespace MyQCodingRobot.Worlds
 
         public Cell(int x, int y, CellConfiguration configuration)
         {
-            Coordinates = (x, y);
+            Coordinates = new Position(x, y);
             Configuration = configuration;
         }
 
@@ -30,7 +25,7 @@ namespace MyQCodingRobot.Worlds
 
         public override string ToString()
         {
-            return $"({Coordinates.X},{Coordinates.X}):{Configuration.CellCode ?? " "} {(IsCleaned ? "c" : " ")}";
+            return $"{Coordinates}:{Configuration.CellCode ?? " "}{(IsCleaned ? "c" : " ")}";
         }
 
         public string ToStringShort()

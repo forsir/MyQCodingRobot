@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using MyQCodingRobot.Worlds;
 
 namespace MyQCodingRobot.Robots
@@ -13,13 +9,29 @@ namespace MyQCodingRobot.Robots
 
         public int Battery { get; private set; }
 
-        public (int X, int Y) Position { get; private set; }
+        public Position Position { get; private set; }
 
-        public Robot((int X, int Y) position, Direction facing, int battery)
+        public IList<RobotMoveConfiguration> Commands { get; private set; }
+
+        public Robot(Position position, Direction facing, int battery, IList<RobotMoveConfiguration> commands)
         {
             Facing = facing;
             Battery = battery;
             Position = position;
+            Commands = commands;
+        }
+
+        public bool DoCommand(World world)
+        {
+            if (Commands.Count == 0)
+            {
+                return false;
+            }
+
+            RobotMoveConfiguration? command = Commands.First();
+            Commands = Commands.Skip(1).ToList();
+            bool result = ProvideOperation(command, world);
+            return result;
         }
 
         private bool Consume(int consumption)
@@ -69,12 +81,12 @@ namespace MyQCodingRobot.Robots
 
         public bool Advance(World world)
         {
-            (int X, int Y) newPosition = Facing switch
+            Position newPosition = Facing switch
             {
-                Direction.North => (Position.X, Position.Y - 1),
-                Direction.East => (Position.X + 1, Position.Y),
-                Direction.South => (Position.X, Position.Y + 1),
-                Direction.West => (Position.X - 1, Position.Y),
+                Direction.North => new Position(Position.X, Position.Y - 1),
+                Direction.East => new Position(Position.X + 1, Position.Y),
+                Direction.South => new Position(Position.X, Position.Y + 1),
+                Direction.West => new Position(Position.X - 1, Position.Y),
                 _ => throw new NotImplementedException(),
             };
 
@@ -88,12 +100,12 @@ namespace MyQCodingRobot.Robots
 
         public bool Back(World world)
         {
-            (int X, int Y) newPosition = Facing switch
+            Position newPosition = Facing switch
             {
-                Direction.North => (Position.X, Position.Y + 1),
-                Direction.East => (Position.X - 1, Position.Y),
-                Direction.South => (Position.X, Position.Y - 1),
-                Direction.West => (Position.X + 1, Position.Y),
+                Direction.North => new Position(Position.X, Position.Y + 1),
+                Direction.East => new Position(Position.X - 1, Position.Y),
+                Direction.South => new Position(Position.X, Position.Y - 1),
+                Direction.West => new Position(Position.X + 1, Position.Y),
                 _ => throw new NotImplementedException(),
             };
 
@@ -113,7 +125,19 @@ namespace MyQCodingRobot.Robots
 
         public override string ToString()
         {
-            return $"{Facing}({Position.X},{Position.Y}):{Battery}";
+            return $"{(char)Facing}({Position.X},{Position.Y}):{Battery}\n{String.Join(", ", Commands)}";
+        }
+
+        public string ToShort()
+        {
+            return Facing switch
+            {
+                Direction.North => "^",
+                Direction.East => ">",
+                Direction.South => "v",
+                Direction.West => "<",
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace MyQCodingRobot.Configurations
 {
-    public class RobotConfiguration
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public string? Facing { get; set; }
-    }
+	public class RobotConfiguration
+	{
+		public int X { get; set; }
+
+		public int Y { get; set; }
+
+		public string? Facing { get; set; }
+	}
 }

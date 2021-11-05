@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MyQCodingRobot.Robots
 {
-    public enum Direction
-    {
-        North = 'N',
-        South = 'S',
-        West = 'W',
-        East = 'E'
-    }
+	public enum Direction
+	{
+		North = 'N',
+		South = 'S',
+		West = 'W',
+		East = 'E'
+	}
 }

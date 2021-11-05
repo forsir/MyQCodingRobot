@@ -7,29 +7,28 @@ using System.Threading.Tasks;
 
 namespace MyQCodingRobot.Worlds
 {
-    public class CellConfigurationConverter
-    {
-        private Dictionary<string, CellConfiguration> CellConfigurations;
-        private const string emptyCellName = "null";
+	public class CellConfigurationConverter
+	{
+		private readonly Dictionary<string, CellConfiguration> _cellConfigurations;
+		private const string EmptyCellName = "null";
 
+		public CellConfigurationConverter()
+		{
+			_cellConfigurations = typeof(CellConfiguration)
+				.GetFields(BindingFlags.Public | BindingFlags.Static)
+				.Where(f => f.FieldType == typeof(CellConfiguration))
+				.ToDictionary(f => ((CellConfiguration)f.GetValue(null)!).CellCode ?? EmptyCellName,
+							 f => (CellConfiguration)f.GetValue(null)!);
+		}
 
-        public CellConfigurationConverter()
-        {
-            CellConfigurations = typeof(CellConfiguration)
-               .GetFields(BindingFlags.Public | BindingFlags.Static)
-               .Where(f => f.FieldType == typeof(CellConfiguration))
-               .ToDictionary(f => ((CellConfiguration)f.GetValue(null)!).CellCode ?? emptyCellName,
-                             f => (CellConfiguration)f.GetValue(null)!);
-        }
+		public CellConfiguration GetByCode(string? code)
+		{
+			if (_cellConfigurations.TryGetValue(code ?? EmptyCellName, out CellConfiguration? cellConfiguration))
+			{
+				return cellConfiguration;
+			}
 
-        public CellConfiguration GetByCode(string? code)
-        {
-            if (CellConfigurations.TryGetValue(code ?? emptyCellName, out CellConfiguration? cellConfiguration))
-            {
-                return cellConfiguration;
-            }
-
-            throw new Exception();
-        }
-    }
+			throw new Exception();
+		}
+	}
 }

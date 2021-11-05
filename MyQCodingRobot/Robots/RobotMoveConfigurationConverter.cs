@@ -2,32 +2,32 @@
 
 namespace MyQCodingRobot.Robots
 {
-    public class RobotMoveConfigurationConverter
-    {
-        private readonly Dictionary<string, RobotMoveConfiguration> RobotMoveConfigurations;
+	public class RobotMoveConfigurationConverter
+	{
+		private readonly Dictionary<string, RobotMoveConfiguration> _robotMoveConfigurations;
 
-        public RobotMoveConfigurationConverter()
-        {
-            RobotMoveConfigurations = typeof(RobotMoveConfiguration)
-               .GetFields(BindingFlags.Public | BindingFlags.Static)
-               .Where(f => f.FieldType == typeof(RobotMoveConfiguration))
-               .ToDictionary(f => ((RobotMoveConfiguration)f.GetValue(null)!).Code,
-                             f => (RobotMoveConfiguration)f.GetValue(null)!);
-        }
+		public RobotMoveConfigurationConverter()
+		{
+			_robotMoveConfigurations = typeof(RobotMoveConfiguration)
+				.GetFields(BindingFlags.Public | BindingFlags.Static)
+				.Where(f => f.FieldType == typeof(RobotMoveConfiguration))
+				.ToDictionary(f => ((RobotMoveConfiguration)f.GetValue(null)!).Code,
+							 f => (RobotMoveConfiguration)f.GetValue(null)!);
+		}
 
-        public RobotMoveConfiguration GetByCode(string code)
-        {
-            if (RobotMoveConfigurations.TryGetValue(code, out RobotMoveConfiguration? RobotMoveConfiguration))
-            {
-                return RobotMoveConfiguration;
-            }
+		public RobotMoveConfiguration GetByCode(string code)
+		{
+			if (_robotMoveConfigurations.TryGetValue(code, out RobotMoveConfiguration? robotMoveConfiguration))
+			{
+				return robotMoveConfiguration;
+			}
 
-            throw new Exception();
-        }
+			throw new Exception();
+		}
 
-        public IList<RobotMoveConfiguration> GetByCode(IEnumerable<string> codes)
-        {
-            return codes.Select(c => GetByCode(c)).ToList();
-        }
-    }
+		public IList<RobotMoveConfiguration> GetByCode(IEnumerable<string> codes)
+		{
+			return codes.Select(c => GetByCode(c)).ToList();
+		}
+	}
 }

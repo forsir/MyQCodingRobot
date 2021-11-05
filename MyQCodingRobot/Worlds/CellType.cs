@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MyQCodingRobot.Worlds
 {
-    public enum CellType
-    {
-        Column,
-        Space,
-        Wall
-    }
+	public enum CellType
+	{
+		Column,
+		Space,
+		Wall
+	}
 }

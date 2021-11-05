@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace MyQCodingRobot.Robots
 {
-    public enum RobotMove
-    {
-        TurnLeft,
-        TurnRight,
-        Advance,
-        Back,
-        Clean
-    }
+	public enum RobotMove
+	{
+		TurnLeft,
+		TurnRight,
+		Advance,
+		Back,
+		Clean
+	}
 }

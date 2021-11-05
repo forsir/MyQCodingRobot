@@ -3,141 +3,149 @@ using MyQCodingRobot.Worlds;
 
 namespace MyQCodingRobot.Robots
 {
-    public class Robot
-    {
-        public Direction Facing { get; private set; }
+	public class Robot
+	{
+		public Direction Facing { get; private set; }
 
-        public int Battery { get; private set; }
+		public int Battery { get; private set; }
 
-        public Position Position { get; private set; }
+		public Position Position { get; private set; }
 
-        public IList<RobotMoveConfiguration> Commands { get; private set; }
+		public RobotStrategy RobotStrategy { get; private set; }
 
-        public Robot(Position position, Direction facing, int battery, IList<RobotMoveConfiguration> commands)
-        {
-            Facing = facing;
-            Battery = battery;
-            Position = position;
-            Commands = commands;
-        }
+		public Robot(Position position, Direction facing, int battery, IList<RobotMoveConfiguration> commands)
+		{
+			Facing = facing;
+			Battery = battery;
+			Position = position;
+			RobotStrategy = new RobotStrategy(commands);
+		}
 
-        public bool DoCommand(World world)
-        {
-            if (Commands.Count == 0)
-            {
-                return false;
-            }
+		public bool DoCommand(World world)
+		{
+			RobotMoveConfiguration? command = RobotStrategy.GetNextStep();
 
-            RobotMoveConfiguration? command = Commands.First();
-            Commands = Commands.Skip(1).ToList();
-            bool result = ProvideOperation(command, world);
-            return result;
-        }
+			if (command == null)
+			{
+				return false;
+			}
 
-        private bool Consume(int consumption)
-        {
-            if (Battery < consumption)
-            {
-                return false;
-            }
-            Battery -= consumption;
-            return true;
-        }
+			bool result = ProvideOperation(command, world);
+			return result;
+		}
 
-        public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, World world)
-        {
-            if (!Consume(robotMoveConfiguration.Cost))
-            {
-                return false;
-            }
-            return robotMoveConfiguration.Function(this, world);
-        }
+		private bool Consume(int consumption)
+		{
+			if (Battery < consumption)
+			{
+				return false;
+			}
+			Battery -= consumption;
+			return true;
+		}
 
-        public bool TurnLeft()
-        {
-            Facing = Facing switch
-            {
-                Direction.North => Direction.West,
-                Direction.East => Direction.North,
-                Direction.South => Direction.East,
-                Direction.West => Direction.South,
-                _ => throw new NotImplementedException(),
-            };
-            return true;
-        }
+		public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, World world)
+		{
+			robotMoveConfiguration = robotMoveConfiguration ?? throw new ArgumentNullException(nameof(robotMoveConfiguration));
 
-        public bool TurnRight()
-        {
-            Facing = Facing switch
-            {
-                Direction.North => Direction.East,
-                Direction.East => Direction.South,
-                Direction.South => Direction.West,
-                Direction.West => Direction.North,
-                _ => throw new NotImplementedException(),
-            };
-            return true;
-        }
+			if (!Consume(robotMoveConfiguration.Cost))
+			{
+				return false;
+			}
+			return robotMoveConfiguration.Function(this, world);
+		}
 
-        public bool Advance(World world)
-        {
-            Position newPosition = Facing switch
-            {
-                Direction.North => new Position(Position.X, Position.Y - 1),
-                Direction.East => new Position(Position.X + 1, Position.Y),
-                Direction.South => new Position(Position.X, Position.Y + 1),
-                Direction.West => new Position(Position.X - 1, Position.Y),
-                _ => throw new NotImplementedException(),
-            };
+		public bool TurnLeft()
+		{
+			Facing = Facing switch
+			{
+				Direction.North => Direction.West,
+				Direction.East => Direction.North,
+				Direction.South => Direction.East,
+				Direction.West => Direction.South,
+				_ => throw new NotImplementedException(),
+			};
+			return true;
+		}
 
-            if (world.CanMove(newPosition))
-            {
-                Position = newPosition;
-                return true;
-            }
-            return false;
-        }
+		public bool TurnRight()
+		{
+			Facing = Facing switch
+			{
+				Direction.North => Direction.East,
+				Direction.East => Direction.South,
+				Direction.South => Direction.West,
+				Direction.West => Direction.North,
+				_ => throw new NotImplementedException(),
+			};
+			return true;
+		}
 
-        public bool Back(World world)
-        {
-            Position newPosition = Facing switch
-            {
-                Direction.North => new Position(Position.X, Position.Y + 1),
-                Direction.East => new Position(Position.X - 1, Position.Y),
-                Direction.South => new Position(Position.X, Position.Y - 1),
-                Direction.West => new Position(Position.X + 1, Position.Y),
-                _ => throw new NotImplementedException(),
-            };
+		public bool Advance(World world)
+		{
+			world = world ?? throw new ArgumentNullException(nameof(world));
 
-            if (world.CanMove(newPosition))
-            {
-                Position = newPosition;
-                return true;
-            }
-            return false;
-        }
+			Position newPosition = Facing switch
+			{
+				Direction.North => new Position(Position.X, Position.Y - 1),
+				Direction.East => new Position(Position.X + 1, Position.Y),
+				Direction.South => new Position(Position.X, Position.Y + 1),
+				Direction.West => new Position(Position.X - 1, Position.Y),
+				_ => throw new NotImplementedException(),
+			};
 
-        public bool Clean(World world)
-        {
-            world.Clean(Position);
-            return true;
-        }
+			if (world.CanMove(newPosition))
+			{
+				Position = newPosition;
+				return true;
+			}
+			return false;
+		}
 
-        public override string ToString()
-        {
-            return $"{(char)Facing}({Position.X},{Position.Y}):{Battery}\n{String.Join(", ", Commands)}";
-        }
+		public bool Back(World world)
+		{
+			world = world ?? throw new ArgumentNullException(nameof(world));
 
-        public string ToShort()
-        {
-            return Facing switch
-            {
-                Direction.North => "^",
-                Direction.East => ">",
-                Direction.South => "v",
-                Direction.West => "<",
-                _ => throw new NotImplementedException(),
-            };
-        }
-    }
+			Position newPosition = Facing switch
+			{
+				Direction.North => new Position(Position.X, Position.Y + 1),
+				Direction.East => new Position(Position.X - 1, Position.Y),
+				Direction.South => new Position(Position.X, Position.Y - 1),
+				Direction.West => new Position(Position.X + 1, Position.Y),
+				_ => throw new NotImplementedException(),
+			};
+
+			if (world.CanMove(newPosition))
+			{
+				Position = newPosition;
+				return true;
+			}
+			return false;
+		}
+
+		public bool Clean(World world)
+		{
+			world = world ?? throw new ArgumentNullException(nameof(world));
+
+			world.Clean(Position);
+			return true;
+		}
+
+		public override string ToString()
+		{
+			return $"{(char)Facing}({Position.X},{Position.Y}):{Battery}\n{RobotStrategy}";
+		}
+
+		public string ToShort()
+		{
+			return Facing switch
+			{
+				Direction.North => "^",
+				Direction.East => ">",
+				Direction.South => "v",
+				Direction.West => "<",
+				_ => throw new NotImplementedException(),
+			};
+		}
+	}
 }

@@ -1,4 +1,4 @@
-﻿using MyQCodingRobot.Configurations;
+﻿using MyQCodingRobot.DataStructures;
 using MyQCodingRobot.Robots;
 using MyQCodingRobot.Worlds;
 using Newtonsoft.Json;
@@ -35,6 +35,10 @@ namespace MyQCodingRobot
 			Cell[][] worldCells = configuration.Map!.Select((m, y) => m.Select((c, x) => new Cell(x, y, cellConfigurationConverter.GetByCode(c))).ToArray()).ToArray();
 			var world = new World(worldCells);
 
+			Console.WriteLine(world.ToString(robot));
+			Console.WriteLine(robot.ToString());
+			Console.WriteLine();
+
 			bool result;
 			do
 			{
@@ -43,6 +47,11 @@ namespace MyQCodingRobot
 				Console.WriteLine(robot.ToString());
 				Console.WriteLine();
 			} while (result);
+
+			var outputStructure = new OutputStructure(world, robot);
+			string? output = JsonConvert.SerializeObject(outputStructure, Formatting.Indented);
+			Console.WriteLine(output);
+			File.WriteAllText(args[1], output);
 		}
 	}
 }

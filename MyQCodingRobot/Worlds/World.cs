@@ -6,6 +6,10 @@ namespace MyQCodingRobot.Worlds
 	{
 		private Cell[][] Cells { get; init; }
 
+		public IEnumerable<Cell> VisitedCells => Cells.SelectMany(cr => cr.Where(c => c.IsVisited));
+
+		public IEnumerable<Cell> CleanedCells => Cells.SelectMany(cr => cr.Where(c => c.IsCleaned));
+
 		public World(Cell[][] cells)
 		{
 			Cells = cells;

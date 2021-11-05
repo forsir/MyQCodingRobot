@@ -136,7 +136,7 @@ namespace MyQCodingRobot.Robots
 
 		public override string ToString()
 		{
-			return $"R: {(char)Facing} ({Position.X},{Position.Y}): {Battery}\n > {RobotStrategy}";
+			return $"R: {(char)Facing} ({Position.X},{Position.Y}): {Battery}\n{RobotStrategy}";
 		}
 
 		public string ToShort()

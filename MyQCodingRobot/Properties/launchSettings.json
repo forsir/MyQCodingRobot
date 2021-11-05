@@ -2,7 +2,7 @@
   "profiles": {
     "MyQCodingRobot": {
       "commandName": "Project",
-      "commandLineArgs": "d:\\Downloads\\myq\\test1.json "
+      "commandLineArgs": "d:\\Downloads\\myq\\test1.json d:\\Downloads\\myq\\output.json"
     }
   }
 }

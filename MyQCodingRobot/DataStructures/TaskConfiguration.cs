@@ -1,5 +1,4 @@
-﻿
-namespace MyQCodingRobot.Configurations
+﻿namespace MyQCodingRobot.DataStructures
 {
 	public class TaskConfiguration
 	{

@@ -67,7 +67,14 @@ namespace MyQCodingRobot.Robots
 
 		public override string ToString()
 		{
-			return string.Join(", ", CurrentBackOffCommands.Count > 0 ? CurrentBackOffCommands : CurrentCommands);
+			if (CurrentBackOffCommands.Count > 0)
+			{
+				return $"B{actualProfile + 1}> {string.Join(", ", CurrentBackOffCommands)}";
+			}
+			else
+			{
+				return $"C > {string.Join(", ", CurrentCommands)}";
+			}
 		}
 	}
 }

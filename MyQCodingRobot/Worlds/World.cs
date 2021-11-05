@@ -1,62 +1,51 @@
-﻿using MyQCodingRobot.Robots;
+﻿using MyQCodingRobot.DataStructures;
+using MyQCodingRobot.Robots;
 
 namespace MyQCodingRobot.Worlds
 {
 	public class World
 	{
-		private Cell[][] Cells { get; init; }
+		private Room Room { get; init; }
 
-		public IEnumerable<Cell> VisitedCells => Cells.SelectMany(cr => cr.Where(c => c.IsVisited));
+		private Robot Robot { get; init; }
 
-		public IEnumerable<Cell> CleanedCells => Cells.SelectMany(cr => cr.Where(c => c.IsCleaned));
-
-		public World(Cell[][] cells)
+		public World(InputConfiguration configuration)
 		{
-			Cells = cells;
+			configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+			var robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();
+			IList<RobotMoveConfiguration> commands = robotMoveConfigurationConverter.GetByCode(configuration.Commands!);
+			Robot = new Robot(new Position(configuration.Start!.X, configuration.Start.Y), DirectionConverter.ConvertToDirection(configuration.Start!.Facing), configuration.Battery!.Value, commands);
+
+			var cellConfigurationConverter = new CellConfigurationConverter();
+			Cell[][] worldCells = configuration.Map!.Select((m, y) => m.Select((c, x) => new Cell(x, y, cellConfigurationConverter.GetByCode(c))).ToArray()).ToArray();
+			Room = new Room(worldCells);
 		}
 
-		private Cell GetCell(Position position)
+		public void Solve()
 		{
-			if (position.Y < 0 || position.Y > Cells.Length)
+			WriteToConsole();
+
+			Room.VisitCell(Robot.Position);
+
+			bool result;
+			do
 			{
-				return Cell.EmptyCell;
-			}
-
-			if (position.X < 0 || position.X > Cells[position.Y].Length)
-			{
-				return Cell.EmptyCell;
-			}
-
-			return Cells[position.Y][position.X];
+				result = Robot.DoCommand(Room);
+				WriteToConsole();
+			} while (result);
 		}
 
-		public bool CanMoveTo(Position position)
+		public void WriteToConsole()
 		{
-			return GetCell(position).Configuration.CanBeOccupied;
+			Console.WriteLine(Room.ToString(Robot));
+			Console.WriteLine(Robot.ToString());
+			Console.WriteLine();
 		}
 
-		public void CleanCell(Position position)
+		public OutputStructure GetOutputStructure()
 		{
-			GetCell(position).Clean();
-		}
-
-		public void VisitCell(Position position)
-		{
-			GetCell(position).VisitCell();
-		}
-
-		public override string ToString()
-		{
-			return string.Join("\n", Cells.Select(cr => string.Join(", ", cr.Select(c => c.ToString()))));
-		}
-
-		public string ToString(Robot robot)
-		{
-			return string.Join("\n", Cells.Select(cr => string.Join(", ", cr.Select(c =>
-			{
-				string? r = robot.Position == c.Coordinates ? robot.ToMark() : " ";
-				return c.ToString() + r;
-			}))));
+			return new OutputStructure(Room, Robot);
 		}
 	}
 }

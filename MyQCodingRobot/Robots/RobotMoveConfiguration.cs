@@ -9,9 +9,9 @@ namespace MyQCodingRobot.Robots
 
 		public int Cost { get; init; }
 
-		public Func<Robot, World, bool> Function { get; init; }
+		public Func<Robot, Room, bool> Function { get; init; }
 
-		public RobotMoveConfiguration(string code, int cost, Func<Robot, World, bool> function)
+		public RobotMoveConfiguration(string code, int cost, Func<Robot, Room, bool> function)
 		{
 			Code = code;
 			Cost = cost;

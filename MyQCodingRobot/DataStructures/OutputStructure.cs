@@ -14,13 +14,13 @@ namespace MyQCodingRobot.DataStructures
 
 		public int battery { get; set; }
 
-		public OutputStructure(World world, Robot robot)
+		public OutputStructure(Room room, Robot robot)
 		{
-			world = world ?? throw new ArgumentNullException(nameof(world));
+			room = room ?? throw new ArgumentNullException(nameof(room));
 			robot = robot ?? throw new ArgumentNullException(nameof(robot));
 
-			visited = world.VisitedCells.Select(c => c.Coordinates).ToArray();
-			cleaned = world.CleanedCells.Select(c => c.Coordinates).ToArray();
+			visited = room.VisitedCells.Select(c => c.Coordinates).ToArray();
+			cleaned = room.CleanedCells.Select(c => c.Coordinates).ToArray();
 			final = new RobotConfiguration() { X = robot.Position.X, Y = robot.Position.Y, Facing = ((char)robot.Facing).ToString() };
 			battery = robot.Battery;
 		}

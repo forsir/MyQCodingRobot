@@ -5,7 +5,7 @@ namespace MyQCodingRobot.Worlds
 	{
 		public static Cell EmptyCell => new Cell(-1, -1, CellConfiguration.Wall);
 
-		public Position Coordinates { get; private set; }
+		public Position Coordinates { get; init; }
 
 		public CellConfiguration Configuration { get; private set; }
 

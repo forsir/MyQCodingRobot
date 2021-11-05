@@ -21,7 +21,7 @@ namespace MyQCodingRobot.Robots
 			RobotStrategy = new RobotStrategy(commands);
 		}
 
-		public bool DoCommand(World world)
+		public bool DoCommand(Room world)
 		{
 			RobotMoveConfiguration? command = RobotStrategy.GetNextStep();
 
@@ -44,7 +44,7 @@ namespace MyQCodingRobot.Robots
 			return true;
 		}
 
-		public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, World world)
+		public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, Room world)
 		{
 			robotMoveConfiguration = robotMoveConfiguration ?? throw new ArgumentNullException(nameof(robotMoveConfiguration));
 			world = world ?? throw new ArgumentNullException(nameof(world));
@@ -84,9 +84,9 @@ namespace MyQCodingRobot.Robots
 			return true;
 		}
 
-		public bool Advance(World world)
+		public bool Advance(Room room)
 		{
-			world = world ?? throw new ArgumentNullException(nameof(world));
+			room = room ?? throw new ArgumentNullException(nameof(room));
 
 			Position newPosition = Facing switch
 			{
@@ -97,7 +97,7 @@ namespace MyQCodingRobot.Robots
 				_ => throw new NotImplementedException(),
 			};
 
-			if (world.CanMoveTo(newPosition))
+			if (room.CanMoveTo(newPosition))
 			{
 				Position = newPosition;
 				return true;
@@ -105,9 +105,9 @@ namespace MyQCodingRobot.Robots
 			return false;
 		}
 
-		public bool Back(World world)
+		public bool Back(Room room)
 		{
-			world = world ?? throw new ArgumentNullException(nameof(world));
+			room = room ?? throw new ArgumentNullException(nameof(room));
 
 			Position newPosition = Facing switch
 			{
@@ -118,7 +118,7 @@ namespace MyQCodingRobot.Robots
 				_ => throw new NotImplementedException(),
 			};
 
-			if (world.CanMoveTo(newPosition))
+			if (room.CanMoveTo(newPosition))
 			{
 				Position = newPosition;
 				return true;
@@ -126,11 +126,11 @@ namespace MyQCodingRobot.Robots
 			return false;
 		}
 
-		public bool Clean(World world)
+		public bool Clean(Room room)
 		{
-			world = world ?? throw new ArgumentNullException(nameof(world));
+			room = room ?? throw new ArgumentNullException(nameof(room));
 
-			world.CleanCell(Position);
+			room.CleanCell(Position);
 			return true;
 		}
 

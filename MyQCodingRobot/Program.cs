@@ -27,31 +27,15 @@ namespace MyQCodingRobot
 				throw new ArgumentException($"Configuration must not be null.");
 			}
 			configuration.Check();
-			var robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();
-			IList<RobotMoveConfiguration> commands = robotMoveConfigurationConverter.GetByCode(configuration.Commands!);
-			var robot = new Robot(new Position(configuration.Start!.X, configuration.Start.Y), DirectionConverter.ConvertToDirection(configuration.Start!.Facing), configuration.Battery!.Value, commands);
 
-			var cellConfigurationConverter = new CellConfigurationConverter();
-			Cell[][] worldCells = configuration.Map!.Select((m, y) => m.Select((c, x) => new Cell(x, y, cellConfigurationConverter.GetByCode(c))).ToArray()).ToArray();
-			var world = new World(worldCells);
+			var world = new World(configuration);
+			world.Solve();
 
-			Console.WriteLine(world.ToString(robot));
-			Console.WriteLine(robot.ToString());
-			Console.WriteLine();
-
-			bool result;
-			do
-			{
-				result = robot.DoCommand(world);
-				Console.WriteLine(world.ToString(robot));
-				Console.WriteLine(robot.ToString());
-				Console.WriteLine();
-			} while (result);
-
-			var outputStructure = new OutputStructure(world, robot);
+			OutputStructure? outputStructure = world.GetOutputStructure();
 			string? output = JsonConvert.SerializeObject(outputStructure, Formatting.Indented);
-			Console.WriteLine(output);
 			File.WriteAllText(args[1], output);
+
+			Console.WriteLine(output);
 		}
 	}
 }

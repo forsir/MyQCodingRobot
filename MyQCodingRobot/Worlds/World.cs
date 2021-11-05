@@ -38,5 +38,10 @@ namespace MyQCodingRobot.Worlds
         {
             GetCell(position).Clean();
         }
+
+        public override string ToString()
+        {
+            return String.Join("\n", Cells.Select(cr => String.Join(",", cr.Select(c => c.ToString()))));
+        }
     }
 }

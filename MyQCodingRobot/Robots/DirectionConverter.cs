@@ -8,7 +8,7 @@ namespace MyQCodingRobot.Robots
 {
     public static class DirectionConverter
     {
-        public static Direction ConvertToDirection(string directionCode)
+        public static Direction ConvertToDirection(string? directionCode)
         {
             if (string.IsNullOrEmpty(directionCode))
             {
@@ -16,7 +16,7 @@ namespace MyQCodingRobot.Robots
             }
 
             char firstLetter = directionCode[0];
-            if (Enum.IsDefined(typeof(Direction), firstLetter))
+            if (Enum.IsDefined(typeof(Direction), (int)firstLetter))
             {
                 return (Direction)firstLetter;
             }

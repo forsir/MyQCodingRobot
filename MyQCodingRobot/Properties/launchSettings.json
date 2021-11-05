@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MyQCodingRobot": {
+      "commandName": "Project",
+      "commandLineArgs": "d:\\Downloads\\myq\\test1.json "
+    }
+  }
+}

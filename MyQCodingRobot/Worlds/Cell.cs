@@ -27,5 +27,15 @@ namespace MyQCodingRobot.Worlds
         {
             IsCleaned = true;
         }
+
+        public override string ToString()
+        {
+            return $"({Coordinates.X},{Coordinates.X}):{Configuration.CellCode ?? " "} {(IsCleaned ? "c" : " ")}";
+        }
+
+        public string ToStringShort()
+        {
+            return Configuration.CellCode ?? "null";
+        }
     }
 }

@@ -15,10 +15,11 @@ namespace MyQCodingRobot.Robots
 
         public (int X, int Y) Position { get; private set; }
 
-        public Robot(Direction facing, int battery)
+        public Robot((int X, int Y) position, Direction facing, int battery)
         {
             Facing = facing;
             Battery = battery;
+            Position = position;
         }
 
         private bool Consume(int consumption)
@@ -108,6 +109,11 @@ namespace MyQCodingRobot.Robots
         {
             world.Clean(Position);
             return true;
+        }
+
+        public override string ToString()
+        {
+            return $"{Facing}({Position.X},{Position.Y}):{Battery}";
         }
     }
 }

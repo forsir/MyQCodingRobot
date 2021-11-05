@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace MyQCodingRobot.Worlds
 {
 	public class CellConfigurationConverter
 	{
 		private readonly Dictionary<string, CellConfiguration> _cellConfigurations;
-		private const string EmptyCellName = "null";
+		private const string EmptyCellName = "";
 
 		public CellConfigurationConverter()
 		{
@@ -28,7 +23,7 @@ namespace MyQCodingRobot.Worlds
 				return cellConfiguration;
 			}
 
-			throw new Exception();
+			throw new Exception($"Cell code {code} not found");
 		}
 	}
 }

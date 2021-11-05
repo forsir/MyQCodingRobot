@@ -5,7 +5,6 @@ namespace MyQCodingRobot.Worlds
 	{
 		public static Cell EmptyCell => new Cell(-1, -1, CellConfiguration.Wall);
 
-
 		public Position Coordinates { get; private set; }
 
 		public CellConfiguration Configuration { get; private set; }
@@ -25,7 +24,7 @@ namespace MyQCodingRobot.Worlds
 			IsCleaned = true;
 		}
 
-		public void Visit()
+		public void VisitCell()
 		{
 			IsVisited = true;
 		}

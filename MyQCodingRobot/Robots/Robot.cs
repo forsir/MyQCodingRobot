@@ -54,7 +54,7 @@ namespace MyQCodingRobot.Robots
 				return false;
 			}
 			bool result = robotMoveConfiguration.Function(this, world);
-			world.Visit(Position);
+			world.VisitCell(Position);
 			return result;
 		}
 
@@ -97,7 +97,7 @@ namespace MyQCodingRobot.Robots
 				_ => throw new NotImplementedException(),
 			};
 
-			if (world.CanMove(newPosition))
+			if (world.CanMoveTo(newPosition))
 			{
 				Position = newPosition;
 				return true;
@@ -118,7 +118,7 @@ namespace MyQCodingRobot.Robots
 				_ => throw new NotImplementedException(),
 			};
 
-			if (world.CanMove(newPosition))
+			if (world.CanMoveTo(newPosition))
 			{
 				Position = newPosition;
 				return true;
@@ -130,7 +130,7 @@ namespace MyQCodingRobot.Robots
 		{
 			world = world ?? throw new ArgumentNullException(nameof(world));
 
-			world.Clean(Position);
+			world.CleanCell(Position);
 			return true;
 		}
 
@@ -139,7 +139,7 @@ namespace MyQCodingRobot.Robots
 			return $"R: {(char)Facing} ({Position.X},{Position.Y}): {Battery}\n{RobotStrategy}";
 		}
 
-		public string ToShort()
+		public string ToMark()
 		{
 			return Facing switch
 			{

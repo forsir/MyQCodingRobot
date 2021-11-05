@@ -17,31 +17,32 @@ namespace MyQCodingRobot.Worlds
 
 		private Cell GetCell(Position position)
 		{
-			if (position.X < 0 || position.X > Cells[0].Length)
-			{
-				return Cell.EmptyCell;
-			}
-
 			if (position.Y < 0 || position.Y > Cells.Length)
 			{
 				return Cell.EmptyCell;
 			}
+
+			if (position.X < 0 || position.X > Cells[position.Y].Length)
+			{
+				return Cell.EmptyCell;
+			}
+
 			return Cells[position.Y][position.X];
 		}
 
-		public bool CanMove(Position position)
+		public bool CanMoveTo(Position position)
 		{
 			return GetCell(position).Configuration.CanBeOccupied;
 		}
 
-		public void Clean(Position position)
+		public void CleanCell(Position position)
 		{
 			GetCell(position).Clean();
 		}
 
-		public void Visit(Position position)
+		public void VisitCell(Position position)
 		{
-			GetCell(position).Visit();
+			GetCell(position).VisitCell();
 		}
 
 		public override string ToString()
@@ -53,7 +54,7 @@ namespace MyQCodingRobot.Worlds
 		{
 			return string.Join("\n", Cells.Select(cr => string.Join(", ", cr.Select(c =>
 			{
-				string? r = robot.Position == c.Coordinates ? robot.ToShort() : " ";
+				string? r = robot.Position == c.Coordinates ? robot.ToMark() : " ";
 				return c.ToString() + r;
 			}))));
 		}

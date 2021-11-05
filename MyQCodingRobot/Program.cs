@@ -9,22 +9,22 @@ namespace MyQCodingRobot
 	{
 		public static void Main(string[] args)
 		{
-			if (args == null || args.Length == 0)
+			if (args == null || args.Length < 1)
 			{
-				Console.WriteLine("args is files");
+				Console.WriteLine("There must be two params.");
 				return;
 			}
 
 			if (!File.Exists(args[0]))
 			{
-				throw new Exception("File does not exists");
+				throw new Exception($"Input file {args[0]} does not exists");
 			}
 
 			string? serializedConfiguration = File.ReadAllText(args[0]);
-			TaskConfiguration? configuration = JsonConvert.DeserializeObject<TaskConfiguration>(serializedConfiguration);
+			InputConfiguration? configuration = JsonConvert.DeserializeObject<InputConfiguration>(serializedConfiguration);
 			if (configuration == null)
 			{
-				throw new ArgumentException($"Configuration must be null.");
+				throw new ArgumentException($"Configuration must not be null.");
 			}
 			configuration.Check();
 			var robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();

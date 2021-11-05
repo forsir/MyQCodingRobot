@@ -7,7 +7,9 @@ namespace MyQCodingRobot.DataStructures
 	public class OutputStructure
 	{
 		public Position[] visited { get; set; }
+
 		public Position[] cleaned { get; set; }
+
 		public RobotConfiguration final { get; set; }
 
 		public int battery { get; set; }

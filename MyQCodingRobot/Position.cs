@@ -24,8 +24,7 @@ namespace MyQCodingRobot
 
 		public bool Equals(Position other)
 		{
-			return X == other.X &&
-				Y == other.Y;
+			return X == other.X && Y == other.Y;
 		}
 
 		public static bool operator ==(Position left, Position right) => left.Equals(right);
@@ -34,7 +33,7 @@ namespace MyQCodingRobot
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(X.GetHashCode(), Y.GetHashCode());
+			return HashCode.Combine(X, Y);
 		}
 	}
 }

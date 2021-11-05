@@ -1,10 +1,13 @@
 ﻿namespace MyQCodingRobot.DataStructures
 {
-	public class TaskConfiguration
+	public class InputConfiguration
 	{
 		public string[][]? Map { get; set; }
+
 		public RobotConfiguration? Start { get; set; }
+
 		public string[]? Commands { get; set; }
+
 		public int? Battery { get; set; }
 
 		public void Check()

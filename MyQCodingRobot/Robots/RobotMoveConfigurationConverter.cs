@@ -22,7 +22,7 @@ namespace MyQCodingRobot.Robots
 				return robotMoveConfiguration;
 			}
 
-			throw new Exception();
+			throw new Exception($"Robot move with code {code} not found.");
 		}
 
 		public IList<RobotMoveConfiguration> GetByCode(IEnumerable<string> codes)

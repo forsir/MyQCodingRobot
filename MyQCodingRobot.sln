@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQCodingRobot", "MyQCodingRobot\MyQCodingRobot.csproj", "{CDA9943C-29ED-4286-828B-D1966E627507}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDA9943C-29ED-4286-828B-D1966E627507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA9943C-29ED-4286-828B-D1966E627507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA9943C-29ED-4286-828B-D1966E627507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA9943C-29ED-4286-828B-D1966E627507}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71B6E5EA-27D3-4F5F-BC2D-8CDFE694293D}
+	EndGlobalSection
+EndGlobal

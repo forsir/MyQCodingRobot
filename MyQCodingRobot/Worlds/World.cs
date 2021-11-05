@@ -35,6 +35,11 @@ namespace MyQCodingRobot.Worlds
 			GetCell(position).Clean();
 		}
 
+		public void Visit(Position position)
+		{
+			GetCell(position).Visit();
+		}
+
 		public override string ToString()
 		{
 			return string.Join("\n", Cells.Select(cr => string.Join(", ", cr.Select(c => c.ToString()))));

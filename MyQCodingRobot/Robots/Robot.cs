@@ -31,7 +31,7 @@ namespace MyQCodingRobot.Robots
 			}
 
 			bool result = ProvideOperation(command, world);
-			return result;
+			return RobotStrategy.SetByResult(result);
 		}
 
 		private bool Consume(int consumption)
@@ -47,12 +47,15 @@ namespace MyQCodingRobot.Robots
 		public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, World world)
 		{
 			robotMoveConfiguration = robotMoveConfiguration ?? throw new ArgumentNullException(nameof(robotMoveConfiguration));
+			world = world ?? throw new ArgumentNullException(nameof(world));
 
 			if (!Consume(robotMoveConfiguration.Cost))
 			{
 				return false;
 			}
-			return robotMoveConfiguration.Function(this, world);
+			bool result = robotMoveConfiguration.Function(this, world);
+			world.Visit(Position);
+			return result;
 		}
 
 		public bool TurnLeft()
@@ -133,7 +136,7 @@ namespace MyQCodingRobot.Robots
 
 		public override string ToString()
 		{
-			return $"{(char)Facing}({Position.X},{Position.Y}):{Battery}\n{RobotStrategy}";
+			return $"R: {(char)Facing} ({Position.X},{Position.Y}): {Battery}\n > {RobotStrategy}";
 		}
 
 		public string ToShort()

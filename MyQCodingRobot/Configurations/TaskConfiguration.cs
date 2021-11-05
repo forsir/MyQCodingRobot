@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MyQCodingRobot.Configurations
 {
-	public class Configuration
+	public class TaskConfiguration
 	{
 		public string[][]? Map { get; set; }
 		public RobotConfiguration? Start { get; set; }

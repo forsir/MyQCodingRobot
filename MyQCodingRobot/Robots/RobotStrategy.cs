@@ -8,36 +8,66 @@ namespace MyQCodingRobot.Robots
 {
 	public class RobotStrategy
 	{
-		private string[][] strategies = new string[][]  {
-new string[]      { "TR", "A", "TL" },
-new string[]      {"TR", "A", "TR"},
-new string[]      { "TR", "A",   "TR"},
-new string[]      { "TR", "B",   "TR"},
-new string[]      { "TL", "TL", "A"}
-};
+		private readonly string[][] _strategies = new string[][] {
+			new string[] { "TR", "A", "TL" },
+			new string[] { "TR", "A", "TR" },
+			new string[] { "TR", "A", "TR" },
+			new string[] { "TR", "B", "TR", "A" },
+			new string[] { "TL", "TL", "A" }
+		};
 
-		private IList<RobotMoveConfiguration> Commands { get; set; }
+		private int actualProfile = -1;
+
+		private IList<RobotMoveConfiguration> CurrentBackOffCommands { get; set; } = new List<RobotMoveConfiguration>();
+
+		private IList<RobotMoveConfiguration> CurrentCommands { get; set; }
+
+		private readonly RobotMoveConfigurationConverter _robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();
 
 		public RobotStrategy(IList<RobotMoveConfiguration> commands)
 		{
-			Commands = commands;
+			CurrentCommands = commands;
 		}
 
 		public RobotMoveConfiguration? GetNextStep()
 		{
-			RobotMoveConfiguration? command = Commands.FirstOrDefault();
-			Commands = Commands.Skip(1).ToList();
+			RobotMoveConfiguration? command = CurrentBackOffCommands.FirstOrDefault();
+			if (command != null)
+			{
+				CurrentBackOffCommands = CurrentBackOffCommands.Skip(1).ToList();
+				return command;
+			}
+
+			actualProfile = -1;
+			command = CurrentCommands.FirstOrDefault();
+			CurrentCommands = CurrentCommands.Skip(1).ToList();
 			return command;
 		}
 
-		public void SetResult(bool result)
+		public bool SetByResult(bool result)
 		{
-			if (!result)
+			if (result)
 			{
-				SetNextStrategy();
+				return true;
 			}
+
+			return SetBackOffStrategy();
 		}
 
-		private void SetNextStrategy() { }
+		private bool SetBackOffStrategy()
+		{
+			actualProfile++;
+			if (actualProfile >= _strategies.Length)
+			{
+				return false;
+			}
+			CurrentBackOffCommands = _robotMoveConfigurationConverter.GetByCode(_strategies[actualProfile]);
+			return true;
+		}
+
+		public override string ToString()
+		{
+			return string.Join(", ", CurrentBackOffCommands.Count > 0 ? CurrentBackOffCommands : CurrentCommands);
+		}
 	}
 }

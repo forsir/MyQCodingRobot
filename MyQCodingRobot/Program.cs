@@ -21,7 +21,7 @@ namespace MyQCodingRobot
 			}
 
 			string? serializedConfiguration = File.ReadAllText(args[0]);
-			Configuration? configuration = JsonConvert.DeserializeObject<Configuration>(serializedConfiguration);
+			TaskConfiguration? configuration = JsonConvert.DeserializeObject<TaskConfiguration>(serializedConfiguration);
 			if (configuration == null)
 			{
 				throw new ArgumentException($"Configuration must be null.");
@@ -41,7 +41,7 @@ namespace MyQCodingRobot
 				result = robot.DoCommand(world);
 				Console.WriteLine(world.ToString(robot));
 				Console.WriteLine(robot.ToString());
-				Console.WriteLine($"--- {result} ---");
+				Console.WriteLine();
 			} while (result);
 		}
 	}

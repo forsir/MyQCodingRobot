@@ -12,6 +12,8 @@ namespace MyQCodingRobot.Worlds
 
 		public bool IsCleaned { get; private set; }
 
+		public bool IsVisited { get; private set; }
+
 		public Cell(int x, int y, CellConfiguration configuration)
 		{
 			Coordinates = new Position(x, y);
@@ -23,9 +25,15 @@ namespace MyQCodingRobot.Worlds
 			IsCleaned = true;
 		}
 
+		public void Visit()
+		{
+			IsVisited = true;
+		}
+
 		public override string ToString()
 		{
-			return $"{Coordinates}:{Configuration.CellCode ?? " "}{(IsCleaned ? "c" : " ")}";
+			//return $"{Coordinates}:{Configuration.CellCode ?? " "}{(IsVisited ? "." : " ")}{(IsCleaned ? "c" : " ")}";
+			return $"{Configuration.CellCode ?? " "}{(IsVisited ? "." : " ")}{(IsCleaned ? "c" : " ")}";
 		}
 
 		public string ToStringShort()

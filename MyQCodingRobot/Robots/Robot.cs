@@ -21,7 +21,7 @@ namespace MyQCodingRobot.Robots
 			RobotStrategy = new RobotStrategy(commands);
 		}
 
-		public bool DoCommand(Room world)
+		public bool DoCommand(Room room)
 		{
 			RobotMoveConfiguration? command = RobotStrategy.GetNextStep();
 
@@ -30,7 +30,7 @@ namespace MyQCodingRobot.Robots
 				return false;
 			}
 
-			bool result = ProvideOperation(command, world);
+			bool result = ProvideOperation(command, room);
 			return RobotStrategy.SetByResult(result);
 		}
 
@@ -44,17 +44,17 @@ namespace MyQCodingRobot.Robots
 			return true;
 		}
 
-		public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, Room world)
+		public bool ProvideOperation(RobotMoveConfiguration robotMoveConfiguration, Room room)
 		{
 			robotMoveConfiguration = robotMoveConfiguration ?? throw new ArgumentNullException(nameof(robotMoveConfiguration));
-			world = world ?? throw new ArgumentNullException(nameof(world));
+			room = room ?? throw new ArgumentNullException(nameof(room));
 
 			if (!Consume(robotMoveConfiguration.Cost))
 			{
 				return false;
 			}
-			bool result = robotMoveConfiguration.Function(this, world);
-			world.VisitCell(Position);
+			bool result = robotMoveConfiguration.Function(this, room);
+			room.VisitCell(Position);
 			return result;
 		}
 

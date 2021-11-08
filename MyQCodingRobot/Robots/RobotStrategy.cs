@@ -8,7 +8,7 @@ namespace MyQCodingRobot.Robots
 {
 	public class RobotStrategy
 	{
-		private readonly string[][] _strategies = new string[][] {
+		private readonly string[][] _backOffStrategies = new string[][] {
 			new string[] { "TR", "A", "TL" },
 			new string[] { "TR", "A", "TR" },
 			new string[] { "TR", "A", "TR" },
@@ -24,9 +24,10 @@ namespace MyQCodingRobot.Robots
 
 		private readonly RobotMoveConfigurationConverter _robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();
 
-		public RobotStrategy(IList<RobotMoveConfiguration> commands)
+		public RobotStrategy(IList<RobotMoveConfiguration> commands, string[][]? backOffStrategies = null)
 		{
 			CurrentCommands = commands;
+			_backOffStrategies = backOffStrategies ?? _backOffStrategies;
 		}
 
 		public RobotMoveConfiguration? GetNextStep()
@@ -57,11 +58,11 @@ namespace MyQCodingRobot.Robots
 		private bool SetBackOffStrategy()
 		{
 			actualProfile++;
-			if (actualProfile >= _strategies.Length)
+			if (actualProfile >= _backOffStrategies.Length)
 			{
 				return false;
 			}
-			CurrentBackOffCommands = _robotMoveConfigurationConverter.GetByCode(_strategies[actualProfile]);
+			CurrentBackOffCommands = _robotMoveConfigurationConverter.GetByCode(_backOffStrategies[actualProfile]);
 			return true;
 		}
 

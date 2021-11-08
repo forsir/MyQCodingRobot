@@ -15,14 +15,14 @@ namespace MyQCodingRobot.Worlds
 			Cells = cells;
 		}
 
-		private Cell GetCell(Position position)
+		public Cell GetCell(Position position)
 		{
-			if (position.Y < 0 || position.Y > Cells.Length)
+			if (position.Y < 0 || position.Y >= Cells.Length)
 			{
 				return Cell.EmptyCell;
 			}
 
-			if (position.X < 0 || position.X > Cells[position.Y].Length)
+			if (position.X < 0 || position.X >= Cells[position.Y].Length)
 			{
 				return Cell.EmptyCell;
 			}

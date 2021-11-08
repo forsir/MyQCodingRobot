@@ -2,22 +2,17 @@
 
 namespace MyQCodingRobot.Robots
 {
-	public class RobotMoveConfigurationConverter
+	public static class RobotMoveConfigurationConverter
 	{
-		private readonly Dictionary<string, RobotMoveConfiguration> _robotMoveConfigurations;
-
-		public RobotMoveConfigurationConverter()
-		{
-			_robotMoveConfigurations = typeof(RobotMoveConfiguration)
+		private static readonly Dictionary<string, RobotMoveConfiguration> RobotMoveConfigurations = typeof(RobotMoveConfiguration)
 				.GetFields(BindingFlags.Public | BindingFlags.Static)
 				.Where(f => f.FieldType == typeof(RobotMoveConfiguration))
 				.ToDictionary(f => ((RobotMoveConfiguration)f.GetValue(null)!).Code,
 							 f => (RobotMoveConfiguration)f.GetValue(null)!);
-		}
 
-		public RobotMoveConfiguration GetByCode(string code)
+		public static RobotMoveConfiguration GetByCode(string code)
 		{
-			if (_robotMoveConfigurations.TryGetValue(code, out RobotMoveConfiguration? robotMoveConfiguration))
+			if (RobotMoveConfigurations.TryGetValue(code, out RobotMoveConfiguration? robotMoveConfiguration))
 			{
 				return robotMoveConfiguration;
 			}
@@ -25,7 +20,7 @@ namespace MyQCodingRobot.Robots
 			throw new Exception($"Robot move with code {code} not found.");
 		}
 
-		public IList<RobotMoveConfiguration> GetByCode(IEnumerable<string> codes)
+		public static IList<RobotMoveConfiguration> GetByCode(IEnumerable<string> codes)
 		{
 			return codes.Select(c => GetByCode(c)).ToList();
 		}

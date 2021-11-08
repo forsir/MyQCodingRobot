@@ -22,8 +22,6 @@ namespace MyQCodingRobot.Robots
 
 		private IList<RobotMoveConfiguration> CurrentCommands { get; set; }
 
-		private readonly RobotMoveConfigurationConverter _robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();
-
 		public RobotStrategy(IList<RobotMoveConfiguration> commands, string[][]? backOffStrategies = null)
 		{
 			CurrentCommands = commands;
@@ -62,7 +60,7 @@ namespace MyQCodingRobot.Robots
 			{
 				return false;
 			}
-			CurrentBackOffCommands = _robotMoveConfigurationConverter.GetByCode(_backOffStrategies[actualProfile]);
+			CurrentBackOffCommands = RobotMoveConfigurationConverter.GetByCode(_backOffStrategies[actualProfile]);
 			return true;
 		}
 

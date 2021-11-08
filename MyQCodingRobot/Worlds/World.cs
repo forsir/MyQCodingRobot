@@ -13,12 +13,10 @@ namespace MyQCodingRobot.Worlds
 		{
 			configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-			var robotMoveConfigurationConverter = new RobotMoveConfigurationConverter();
-			IList<RobotMoveConfiguration> commands = robotMoveConfigurationConverter.GetByCode(configuration.Commands!);
+			IList<RobotMoveConfiguration> commands = RobotMoveConfigurationConverter.GetByCode(configuration.Commands!);
 			Robot = new Robot(new Position(configuration.Start!.X, configuration.Start.Y), DirectionConverter.ConvertToDirection(configuration.Start!.Facing), configuration.Battery!.Value, commands);
 
-			var cellConfigurationConverter = new CellConfigurationConverter();
-			Cell[][] worldCells = configuration.Map!.Select((m, y) => m.Select((c, x) => new Cell(x, y, cellConfigurationConverter.GetByCode(c))).ToArray()).ToArray();
+			Cell[][] worldCells = configuration.Map!.Select((m, y) => m.Select((c, x) => new Cell(x, y, CellConfigurationConverter.GetByCode(c))).ToArray()).ToArray();
 			Room = new Room(worldCells);
 		}
 

@@ -2,23 +2,18 @@
 
 namespace MyQCodingRobot.Worlds
 {
-	public class CellConfigurationConverter
+	public static class CellConfigurationConverter
 	{
-		private readonly Dictionary<string, CellConfiguration> _cellConfigurations;
 		private const string EmptyCellName = "";
-
-		public CellConfigurationConverter()
-		{
-			_cellConfigurations = typeof(CellConfiguration)
+		private static readonly Dictionary<string, CellConfiguration> CellConfigurations = typeof(CellConfiguration)
 				.GetFields(BindingFlags.Public | BindingFlags.Static)
 				.Where(f => f.FieldType == typeof(CellConfiguration))
 				.ToDictionary(f => ((CellConfiguration)f.GetValue(null)!).CellCode ?? EmptyCellName,
 							 f => (CellConfiguration)f.GetValue(null)!);
-		}
 
-		public CellConfiguration GetByCode(string? code)
+		public static CellConfiguration GetByCode(string? code)
 		{
-			if (_cellConfigurations.TryGetValue(code ?? EmptyCellName, out CellConfiguration? cellConfiguration))
+			if (CellConfigurations.TryGetValue(code ?? EmptyCellName, out CellConfiguration? cellConfiguration))
 			{
 				return cellConfiguration;
 			}
